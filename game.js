@@ -1,10 +1,20 @@
 import {createAnimations} from './animations.js'
-import {createBlocks} from './estructure.js';
 
 // global phaser
 
+
+
 const pantallaX = window.innerWidth;
 const pantallaY = window.innerHeight;
+const overEnemy = new Audio('assets/sound/effects/goomba-stomp.wav');
+const over = new Audio('/assets/sound/music/gameover.mp3');
+const music1 = new Audio("/assets/sound/music/overworld/theme.mp3")
+
+window.setTimeout(()=>{
+  music1.loop = true
+  music1.play()
+},100)
+
 
 const config ={
 type: Phaser.AUTO,
@@ -44,7 +54,8 @@ function preload (){
     )
     this.load.image(
       'pipe1',
-      'assets/scenery/pipe1.png'
+      'assets/scenery/pipe1.png',
+      {frameWidth: 32, frameHeight: 48}
     )
     this.load.image(
       'castle',
@@ -68,13 +79,17 @@ function preload (){
       'assets/entities/shell.png',
       {frameWidth: 16, frameHeight: 15}
     )
-    
+    //musica del juego
+    this.load.audio('prueba',"/assets/sound/music/overworld/theme.mp3")
+ 
 }
-
 
 function create (){
 
  this.floor = this.physics.add.staticGroup()
+
+
+ console.log( pantallaY /2);
 
   //nubes
    this.add.image(100,50,'cloud1')
@@ -117,58 +132,18 @@ function create (){
    this.add.image(1580,50,'cloud1')
    .setOrigin(0,0)
    .setScale(0.25)
-//tubos
-
-
-this.floor
-.create(450, config.height -26, 'pipe1')
-.setOrigin(0,0.5)
-.refreshBody()
-
-//motañas
-
-this.add.image(80,385,'mountain')
-.setOrigin(0,0)
-.setScale(0.55)
-
-this.add.image(180,365,'mountain2')
-.setOrigin(0,0)
-.setScale(0.65)
-
-this.add.image(280,385,'mountain')
-.setOrigin(0,0)
-.setScale(0.45)
-
-this.add.image(1200,385,'mountain')
-.setOrigin(0,0)
-.setScale(0.55)
-
-this.add.image(1340,362,'mountain2')
-.setOrigin(0,0)
-.setScale(0.55)
-
-this.add.image(1440,385,'mountain')
-.setOrigin(0,0)
-.setScale(0.65)
-
-this.add.image(1540,368,'mountain2')
-.setOrigin(0,0)
-.setScale(0.54)
 
 
 //bloques 
 
-// this.add.tileSprite(500,config.height-92, 84, 82,  'floorbricks' )
-//  .setOrigin(0,0.5)
 
-
-this.floor
-.create(-100, config.height -76, 'floorbricks')
+ this.floor
+.create(-100,config.height -66, 'floorbricks')
 .setOrigin(0,0)
 .refreshBody()
 
 this.floor
-.create(0, config.height -16, 'floorbricks')
+.create(0, config.height -16 , 'floorbricks')
 .setOrigin(0,0.5)
 .refreshBody()
 
@@ -226,25 +201,59 @@ this.floor
    .create(1569, config.height -16, 'floorbricks')
    .setOrigin(0,0.5)
    .refreshBody()  
+// calculos del suelo
+   const bloquesY = this.textures.list.floorbricks.frames.__BASE.cutHeight;
+
+//motañas
+
+this.add.image(80,( config.height - bloquesY ),'mountain')
+.setOrigin(0,1)
+.setScale(0.55)
+
+this.add.image(180,( config.height - bloquesY ),'mountain2')
+.setOrigin(0,1)
+.setScale(0.65)
+
+this.add.image(280,( config.height - bloquesY ),'mountain')
+.setOrigin(0,1)
+.setScale(0.45)
+
+this.add.image(1200,( config.height - bloquesY ),'mountain')
+.setOrigin(0,1)
+.setScale(0.55)
+
+this.add.image(1340,( config.height - bloquesY ),'mountain2')
+.setOrigin(0,1)
+.setScale(0.55)
+
+this.add.image(1440,( config.height - bloquesY ),'mountain')
+.setOrigin(0,1)
+.setScale(0.65)
+
+this.add.image(1540,( config.height - bloquesY ),'mountain2')
+.setOrigin(0,1)
+.setScale(0.54)
+
+  //tubos
+  // this.floor
+  //  .create(450, ( config.height - bloquesY ), 'pipe1')
+  //  .setOrigin(0,1)
+  //  .refreshBody()
+    
+   this.tubos = this.physics.add.sprite(445,( config.height - bloquesY ),'pipe1')
+   .setOrigin(0,1)
+   .setCollideWorldBounds(true)
+   .setGravityY(0)
+   .setScale(1)
+   .refreshBody()
 
    //castillo final
-   this.add.image(1510,373,'castle')
-   .setOrigin(0,0.5)
+   this.add.image(1510,( config.height - bloquesY ),'castle')
+   .setOrigin(0,1)
    .setScale(0.77)
-   //  enemigos
+ 
 
-  // this.enemies = this.physics.add.group({
-  //   key: 'enemy',
-  //   repeat: -1,
-  //   setXY: { x: 300, y: 391, stepX: 500 }
-  // }) 
-  // this.enemies.children.iterate(function (enemy) {
-  //   enemy.setCollideWorldBounds(true);
-  //   enemy.setBounce(.9)
-  //   enemy.body.setVelocityX(100)
-  // })
-
-  this.enemies =  this.physics.add.sprite( 300,200,'enemy')
+  this.enemies =  this.physics.add.sprite( 300,( pantallaY /2),'enemy')
   .setOrigin(0,1)
    .setCollideWorldBounds(true)
    .setGravityY(300)
@@ -264,7 +273,7 @@ this.floor
   
 
   //  mario bro
-   this.mario =  this.physics.add.sprite( 10,200,'mario')
+   this.mario =  this.physics.add.sprite( 10,( pantallaY /2),'mario')
    .setOrigin(0,1)
    .setCollideWorldBounds(true)
    .setGravityY(300)
@@ -272,6 +281,8 @@ this.floor
    
    this.physics.world.setBounds(0,0,1700,config.height)
    this.physics.add.collider(this.mario, this.floor)
+   this.physics.add.collider(this.tubos, this.floor)
+   this.physics.add.collider(this.mario, this.tubos)
    this.physics.add.collider(this.mario, this.enemies)
    this.physics.add.collider(this.enemies, this.floor)
 
@@ -280,11 +291,31 @@ this.floor
    createAnimations(this)
 
    this.keys = this.input.keyboard.createCursorKeys()
+
+   //music the game
+   let una = 0
+   let music = this.sound.add('prueba')
+   
+   
+
 }
-  
+
+
 
 function update(){
-
+    // mario y los objetos
+   if(this.mario.x >= 420 && 
+    this.mario.x <= 425 && 
+     this.mario.y >= 400 
+   ){
+  this.mario.x = 420
+  }else if(this.mario.x >= 430 &&
+           this.mario.x <= 475 &&
+           this.mario.y >= 400 
+  ){
+  this.mario.x = 475
+  }
+  //muerte de mario 
   if(this.mario.isDead) return
 
   if(this.keys.left.isDown){
@@ -306,6 +337,7 @@ function update(){
     jump.play()
   } 
   
+  
   if(this.mario.y >= config.height ||
     this.enemies.y == this.mario.y &&
     (this.enemies.x - this.mario.x) <= 28.9 &&
@@ -314,7 +346,6 @@ function update(){
     this.mario.setCollideWorldBounds(false)
     this.mario.isDead = true
     this.mario.anims.play('mario-dead',true)
-    const over = new Audio('/assets/sound/music/gameover.mp3')
     over.volume = 0.2
     over.play()
     setTimeout(()=>{
@@ -330,12 +361,19 @@ function update(){
 if(this.mario.y >= (this.enemies.y - this.enemies.height-7) &&
   (this.enemies.x - this.mario.x) <= 28.9 &&
   (this.enemies.x - this.mario.x)>= -20 
-){
- this.enemies.setVelocityY(-300)
- this.enemies.setVelocityX(200)
- this.enemies.setCollideWorldBounds(false)
- this.enemies.destroy()
-}
+){ 
+  overEnemy.play()
+  this.enemies
+  .setVelocityX(300)
+  .setCollideWorldBounds(false);
+  this.enemies.isDead = true;
+
+  setTimeout(()=>{
+    this.enemies.y += +30; 
+  },500)
+  
+
+}if(this.enemies.isDead)return
 if(this.enemies.x >= 430){
   this.enemies.setVelocityX(-100)
   this.enemies.flipX = false
@@ -349,7 +387,8 @@ if(this.enemies.x <= 30 ){
   this.enemies.setVelocityX(0)
 }
 
-console.log( this.enemies.y);
+
+console.log(this.mario.x);
 
 }
 
