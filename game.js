@@ -48,7 +48,7 @@ physics: {
     default: 'arcade',
     arcade:{
          gravity: {y:300},
-         debug: true
+         debug: false
     }
    
 },
@@ -283,9 +283,9 @@ this.floor
    .refreshBody()
 
    //castillo final
-   this.add.image(1510,( config.height - bloquesY ),'castle')
+   this.add.image(1510,( config.height - (bloquesY+ 16 ) ),'castle')
    .setOrigin(0,1)
-   .setScale(0.77)
+   .setScale(a2)
  
 
   this.enemies =  this.physics.add.sprite( 200,( pantallaY /2),'enemy')
@@ -308,7 +308,7 @@ this.floor
   
 
   //  mario bro
-   this.mario =  this.physics.add.sprite( 20,( pantallaY /2),'mario')
+   this.mario =  this.physics.add.sprite( 1220,( pantallaY /2),'mario')
    .setOrigin(0,1)
    .setCollideWorldBounds(true)
    .setGravityY(300)
