@@ -276,7 +276,7 @@ this.floor
   //  .setOrigin(0,1)
   //  .refreshBody()
     
-   this.tubos = this.physics.add.sprite(445,( pantallaY - bloquesY ),'pipe1')
+   this.tubos = this.physics.add.sprite(445,( pantallaY - (bloquesY+16) ),'pipe1')
    .setOrigin(0,1)
    .setCollideWorldBounds(true)
    .setGravityY(0)
@@ -309,7 +309,7 @@ this.floor
   
 
   //  mario bro
-   this.mario =  this.physics.add.sprite( 1220,( pantallaY /2),'mario')
+   this.mario =  this.physics.add.sprite( 20,( pantallaY /2),'mario')
    .setOrigin(0,1)
    .setCollideWorldBounds(true)
    .setGravityY(300)
