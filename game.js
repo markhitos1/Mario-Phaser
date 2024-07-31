@@ -6,10 +6,10 @@ const pantallaY = window.innerHeight;
 const overEnemy = new Audio('assets/sound/effects/goomba-stomp.wav');
 const over = new Audio('/assets/sound/music/gameover.mp3');
 const music1 = new Audio("/assets/sound/music/overworld/theme.mp3");
-window.setTimeout(()=>{
-  music1.loop = true
-  music1.play()
-},400)
+// window.setTimeout(()=>{
+//   music1.loop = true
+//   music1.play()
+// },400)
 
 
 var a,b,c,a2,b2,c2;
