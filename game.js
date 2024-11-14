@@ -11,7 +11,7 @@ const victory = new Audio('assets/sound/music/win.wav')
 window.setTimeout(()=>{
   music1.loop = true
   music1.play()
-},500)
+},5200)
 
 let hasJumped = false;//para que no repita musica de victoria
 
@@ -688,7 +688,7 @@ if (this.mario.x >= 2800 && !hasJumped) {
 }
 
 
-if(this.enemies.isDead || this.enemies2.isDead)return //elimina 
+if(this.enemies.isDead && this.enemies2.isDead)return //elimina 
 
 if(this.enemies.x >= 430){
   this.enemies.setVelocityX(-100)
@@ -704,7 +704,7 @@ if(this.enemies.x <= 30 ){
 }
 // enemigo2
  
-
+ if(this.enemies2.isDead)return //elimina a los personajes   
 
 // Movimiento hacia la izquierda si la posición x alcanza el límite superior (2400)
 if (this.enemies2.x >= 2430) {
